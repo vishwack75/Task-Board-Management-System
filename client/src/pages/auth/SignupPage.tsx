@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Kanban, Mail, Lock, User, ArrowRight, AlertCircle } from 'lucide-react';
+import { Kanban, Mail, Lock, User, ArrowRight, AlertCircle, Eye, EyeOff } from 'lucide-react';
 import { signupSchema } from '../../validations/auth.validation';
 import type { SignupFormValues } from '../../validations/auth.validation';
 import { useSignupMutation } from '../../store/services/apiSlice';
@@ -16,6 +16,8 @@ export const SignupPage = () => {
   const toast = useToast();
   const [signup, { isLoading }] = useSignupMutation();
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const {
     register,
@@ -131,13 +133,25 @@ export const SignupPage = () => {
               <div className="relative">
                 <Lock className="absolute left-3.5 top-3 w-4 h-4 text-pink-300" />
                 <input
-                  type="password"
+                  type={showPassword ? 'text' : 'password'}
                   placeholder="At least 6 characters"
                   {...register('password')}
-                  className={`w-full pl-10 pr-4 py-2.5 rounded-xl bg-pink-50/60 border text-slate-700 placeholder-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-pink-300/60 transition-all ${
+                  className={`w-full pl-10 pr-10 py-2.5 rounded-xl bg-pink-50/60 border text-slate-700 placeholder-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-pink-300/60 transition-all ${
                     errors.password ? 'border-rose-400' : 'border-pink-200'
                   }`}
                 />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3.5 top-3 text-pink-300 hover:text-pink-500 transition-colors focus:outline-none"
+                  aria-label={showPassword ? 'Hide password' : 'Show password'}
+                >
+                  {showPassword ? (
+                    <EyeOff className="w-4 h-4" />
+                  ) : (
+                    <Eye className="w-4 h-4" />
+                  )}
+                </button>
               </div>
               {errors.password && (
                 <p className="text-xs text-rose-500 mt-1">{errors.password.message}</p>
@@ -151,13 +165,25 @@ export const SignupPage = () => {
               <div className="relative">
                 <Lock className="absolute left-3.5 top-3 w-4 h-4 text-pink-300" />
                 <input
-                  type="password"
+                  type={showConfirmPassword ? 'text' : 'password'}
                   placeholder="Re-enter your password"
                   {...register('confirmPassword')}
-                  className={`w-full pl-10 pr-4 py-2.5 rounded-xl bg-pink-50/60 border text-slate-700 placeholder-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-pink-300/60 transition-all ${
+                  className={`w-full pl-10 pr-10 py-2.5 rounded-xl bg-pink-50/60 border text-slate-700 placeholder-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-pink-300/60 transition-all ${
                     errors.confirmPassword ? 'border-rose-400' : 'border-pink-200'
                   }`}
                 />
+                <button
+                  type="button"
+                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                  className="absolute right-3.5 top-3 text-pink-300 hover:text-pink-500 transition-colors focus:outline-none"
+                  aria-label={showConfirmPassword ? 'Hide password' : 'Show password'}
+                >
+                  {showConfirmPassword ? (
+                    <EyeOff className="w-4 h-4" />
+                  ) : (
+                    <Eye className="w-4 h-4" />
+                  )}
+                </button>
               </div>
               {errors.confirmPassword && (
                 <p className="text-xs text-rose-500 mt-1">

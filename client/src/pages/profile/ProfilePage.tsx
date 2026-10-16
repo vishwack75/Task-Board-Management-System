@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { User, Camera, Lock, CheckCircle2, AlertCircle } from 'lucide-react';
+import { User, Camera, Lock, CheckCircle2, AlertCircle, Eye, EyeOff } from 'lucide-react';
 import { Navbar } from '../../components/layout/Navbar';
 import {
   profileSchema,
@@ -33,6 +33,10 @@ export const ProfilePage = () => {
   const [profileErrorMsg, setProfileErrorMsg] = useState<string | null>(null);
   const [passwordSuccessMsg, setPasswordSuccessMsg] = useState<string | null>(null);
   const [passwordErrorMsg, setPasswordErrorMsg] = useState<string | null>(null);
+
+  const [showCurrentPassword, setShowCurrentPassword] = useState(false);
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [showConfirmNewPassword, setShowConfirmNewPassword] = useState(false);
 
   const currentUser = profileData?.data;
 
@@ -276,12 +280,22 @@ export const ProfilePage = () => {
               <form onSubmit={handlePasswordSubmit(onPasswordSubmit)} className="space-y-4 max-w-md">
                 <div>
                   <label className={labelBase}>Current Password</label>
-                  <input
-                    type="password"
-                    placeholder="••••••••"
-                    {...registerPassword('currentPassword')}
-                    className={`${inputBase} ${passwordErrors.currentPassword ? 'border-rose-400' : 'border-pink-200'}`}
-                  />
+                  <div className="relative">
+                    <input
+                      type={showCurrentPassword ? 'text' : 'password'}
+                      placeholder="••••••••"
+                      {...registerPassword('currentPassword')}
+                      className={`${inputBase} pr-10 ${passwordErrors.currentPassword ? 'border-rose-400' : 'border-pink-200'}`}
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowCurrentPassword(!showCurrentPassword)}
+                      className="absolute right-3.5 top-3 text-pink-300 hover:text-pink-500 transition-colors focus:outline-none"
+                      aria-label={showCurrentPassword ? 'Hide password' : 'Show password'}
+                    >
+                      {showCurrentPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                    </button>
+                  </div>
                   {passwordErrors.currentPassword && (
                     <p className="text-xs text-rose-500 mt-1">
                       {passwordErrors.currentPassword.message}
@@ -291,12 +305,22 @@ export const ProfilePage = () => {
 
                 <div>
                   <label className={labelBase}>New Password</label>
-                  <input
-                    type="password"
-                    placeholder="At least 6 characters"
-                    {...registerPassword('newPassword')}
-                    className={`${inputBase} ${passwordErrors.newPassword ? 'border-rose-400' : 'border-pink-200'}`}
-                  />
+                  <div className="relative">
+                    <input
+                      type={showNewPassword ? 'text' : 'password'}
+                      placeholder="At least 6 characters"
+                      {...registerPassword('newPassword')}
+                      className={`${inputBase} pr-10 ${passwordErrors.newPassword ? 'border-rose-400' : 'border-pink-200'}`}
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowNewPassword(!showNewPassword)}
+                      className="absolute right-3.5 top-3 text-pink-300 hover:text-pink-500 transition-colors focus:outline-none"
+                      aria-label={showNewPassword ? 'Hide password' : 'Show password'}
+                    >
+                      {showNewPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                    </button>
+                  </div>
                   {passwordErrors.newPassword && (
                     <p className="text-xs text-rose-500 mt-1">
                       {passwordErrors.newPassword.message}
@@ -306,12 +330,22 @@ export const ProfilePage = () => {
 
                 <div>
                   <label className={labelBase}>Confirm New Password</label>
-                  <input
-                    type="password"
-                    placeholder="Re-enter your new password"
-                    {...registerPassword('confirmNewPassword')}
-                    className={`${inputBase} ${passwordErrors.confirmNewPassword ? 'border-rose-400' : 'border-pink-200'}`}
-                  />
+                  <div className="relative">
+                    <input
+                      type={showConfirmNewPassword ? 'text' : 'password'}
+                      placeholder="Re-enter your new password"
+                      {...registerPassword('confirmNewPassword')}
+                      className={`${inputBase} pr-10 ${passwordErrors.confirmNewPassword ? 'border-rose-400' : 'border-pink-200'}`}
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setShowConfirmNewPassword(!showConfirmNewPassword)}
+                      className="absolute right-3.5 top-3 text-pink-300 hover:text-pink-500 transition-colors focus:outline-none"
+                      aria-label={showConfirmNewPassword ? 'Hide password' : 'Show password'}
+                    >
+                      {showConfirmNewPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                    </button>
+                  </div>
                   {passwordErrors.confirmNewPassword && (
                     <p className="text-xs text-rose-500 mt-1">
                       {passwordErrors.confirmNewPassword.message}
