@@ -16,8 +16,11 @@ export const changePasswordValidation = z
       .min(1, 'Current password is required'),
     newPassword: z
       .string({ required_error: 'New password is required' })
-      .min(6, 'New password must be at least 6 characters long')
-      .max(100, 'New password cannot exceed 100 characters'),
+      .min(8, 'New password must be at least 8 characters long')
+      .max(100, 'New password cannot exceed 100 characters')
+      .regex(/[A-Z]/, 'New password must contain at least one uppercase letter')
+      .regex(/[0-9]/, 'New password must contain at least one number')
+      .regex(/[^A-Za-z0-9]/, 'New password must contain at least one special character / symbol'),
   })
   .refine((data) => data.currentPassword !== data.newPassword, {
     message: 'New password must be different from current password',

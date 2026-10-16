@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Kanban, Mail, Lock, User, ArrowRight, AlertCircle, Eye, EyeOff } from 'lucide-react';
+import { Kanban, Mail, Lock, User, ArrowRight, AlertCircle, Eye, EyeOff, Check } from 'lucide-react';
 import { signupSchema } from '../../validations/auth.validation';
 import type { SignupFormValues } from '../../validations/auth.validation';
 import { useSignupMutation } from '../../store/services/apiSlice';
@@ -22,6 +22,7 @@ export const SignupPage = () => {
   const {
     register,
     handleSubmit,
+    watch,
     formState: { errors },
   } = useForm<SignupFormValues>({
     resolver: zodResolver(signupSchema),
@@ -32,6 +33,14 @@ export const SignupPage = () => {
       confirmPassword: '',
     },
   });
+
+  const passwordValue = watch('password') || '';
+  const passwordCriteria = [
+    { label: '8 characters', met: passwordValue.length >= 8 },
+    { label: '1 uppercase letter', met: /[A-Z]/.test(passwordValue) },
+    { label: '1 number', met: /[0-9]/.test(passwordValue) },
+    { label: '1 symbol / special', met: /[^A-Za-z0-9]/.test(passwordValue) },
+  ];
 
   const onSubmit = async (values: SignupFormValues) => {
     setErrorMessage(null);
@@ -134,7 +143,7 @@ export const SignupPage = () => {
                 <Lock className="absolute left-3.5 top-3 w-4 h-4 text-pink-300" />
                 <input
                   type={showPassword ? 'text' : 'password'}
-                  placeholder="At least 6 characters"
+                  placeholder="Min 8 chars, 1 uppercase, 1 number, 1 symbol"
                   {...register('password')}
                   className={`w-full pl-10 pr-10 py-2.5 rounded-xl bg-pink-50/60 border text-slate-700 placeholder-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-pink-300/60 transition-all ${
                     errors.password ? 'border-rose-400' : 'border-pink-200'
@@ -153,6 +162,30 @@ export const SignupPage = () => {
                   )}
                 </button>
               </div>
+
+              {/* Password Requirements Checklist */}
+              <div className="mt-2 grid grid-cols-2 gap-1.5 p-2.5 rounded-xl bg-pink-50/40 border border-pink-100/70">
+                {passwordCriteria.map((c) => (
+                  <div
+                    key={c.label}
+                    className={`flex items-center gap-1.5 text-[11px] font-medium transition-colors ${
+                      c.met ? 'text-emerald-600' : 'text-slate-400'
+                    }`}
+                  >
+                    <span
+                      className={`w-3.5 h-3.5 rounded-full flex items-center justify-center text-[9px] border transition-colors ${
+                        c.met
+                          ? 'bg-emerald-100 border-emerald-300 text-emerald-600 font-bold'
+                          : 'bg-slate-100 border-slate-200 text-slate-400'
+                      }`}
+                    >
+                      {c.met ? <Check className="w-2.5 h-2.5" /> : '•'}
+                    </span>
+                    <span>{c.label}</span>
+                  </div>
+                ))}
+              </div>
+
               {errors.password && (
                 <p className="text-xs text-rose-500 mt-1">{errors.password.message}</p>
               )}
