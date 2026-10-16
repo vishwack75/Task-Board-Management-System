@@ -34,6 +34,14 @@ export const signup = async (
       name: user.name,
     });
 
+    res.cookie('token', token, {
+      httpOnly: false,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+      path: '/',
+    });
+
     res.status(201).json({
       success: true,
       message: 'Account registered successfully',
@@ -83,6 +91,14 @@ export const login = async (
       id: user._id.toString(),
       email: user.email,
       name: user.name,
+    });
+
+    res.cookie('token', token, {
+      httpOnly: false,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+      path: '/',
     });
 
     res.status(200).json({
@@ -180,6 +196,10 @@ export const logout = async (
   _req: Request,
   res: Response
 ): Promise<void> => {
+  res.clearCookie('token', {
+    path: '/',
+    sameSite: 'lax',
+  });
   res.status(200).json({
     success: true,
     message: 'Logged out successfully',

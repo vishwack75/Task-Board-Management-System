@@ -2,6 +2,8 @@ import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import type { IUser } from '../../types';
 
+import { getCookie, setCookie, deleteCookie } from '../../utils/cookie';
+
 interface AuthState {
   user: IUser | null;
   token: string | null;
@@ -9,16 +11,12 @@ interface AuthState {
 }
 
 const getStoredToken = (): string | null => {
-  try {
-    return localStorage.getItem('token');
-  } catch {
-    return null;
-  }
+  return getCookie('token');
 };
 
 const getStoredUser = (): IUser | null => {
   try {
-    const raw = localStorage.getItem('user');
+    const raw = getCookie('user');
     return raw ? JSON.parse(raw) : null;
   } catch {
     return null;
@@ -27,6 +25,12 @@ const getStoredUser = (): IUser | null => {
 
 const token = getStoredToken();
 const user = getStoredUser();
+
+// Clean up any legacy localStorage tokens
+try {
+  localStorage.removeItem('token');
+  localStorage.removeItem('user');
+} catch {}
 
 const initialState: AuthState = {
   user,
@@ -45,19 +49,27 @@ const authSlice = createSlice({
       state.user = action.payload.user;
       state.token = action.payload.token;
       state.isAuthenticated = true;
-      localStorage.setItem('token', action.payload.token);
-      localStorage.setItem('user', JSON.stringify(action.payload.user));
+      setCookie('token', action.payload.token, 7);
+      setCookie('user', JSON.stringify(action.payload.user), 7);
+      try {
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+      } catch {}
     },
     updateUser: (state, action: PayloadAction<IUser>) => {
       state.user = action.payload;
-      localStorage.setItem('user', JSON.stringify(action.payload));
+      setCookie('user', JSON.stringify(action.payload), 7);
     },
     logout: (state) => {
       state.user = null;
       state.token = null;
       state.isAuthenticated = false;
-      localStorage.removeItem('token');
-      localStorage.removeItem('user');
+      deleteCookie('token');
+      deleteCookie('user');
+      try {
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+      } catch {}
     },
   },
 });
