@@ -4,11 +4,13 @@ import { Kanban, User, LogOut, Menu, X, LayoutDashboard } from 'lucide-react';
 import { useAppDispatch, useAppSelector } from '../../store/store';
 import { logout } from '../../store/slices/authSlice';
 import { useLogoutApiMutation } from '../../store/services/apiSlice';
+import { useToast } from '../common/Toast';
 
 export const Navbar = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const location = useLocation();
+  const toast = useToast();
   const { user } = useAppSelector((state) => state.auth);
   const [logoutApi] = useLogoutApiMutation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -19,6 +21,7 @@ export const Navbar = () => {
     } catch {
     } finally {
       dispatch(logout());
+      toast.info('You have signed out successfully.', 'Signed Out');
       navigate('/login');
     }
   };

@@ -8,10 +8,12 @@ import type { SignupFormValues } from '../../validations/auth.validation';
 import { useSignupMutation } from '../../store/services/apiSlice';
 import { useAppDispatch } from '../../store/store';
 import { setCredentials } from '../../store/slices/authSlice';
+import { useToast } from '../../components/common/Toast';
 
 export const SignupPage = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
+  const toast = useToast();
   const [signup, { isLoading }] = useSignupMutation();
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
@@ -45,12 +47,13 @@ export const SignupPage = () => {
             token: response.data.token,
           })
         );
+        toast.success(`Welcome to TaskFlow, ${response.data.user.name}!`, 'Account Created');
         navigate('/');
       }
     } catch (err: any) {
-      setErrorMessage(
-        err?.data?.message || 'Registration failed. Please try again.'
-      );
+      const msg = err?.data?.message || 'Registration failed. Please try again.';
+      setErrorMessage(msg);
+      toast.error(msg, 'Registration Failed');
     }
   };
 

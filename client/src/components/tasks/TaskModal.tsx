@@ -9,6 +9,7 @@ import {
   useCreateTaskMutation,
   useUpdateTaskMutation,
 } from '../../store/services/apiSlice';
+import { useToast } from '../common/Toast';
 
 interface TaskModalProps {
   isOpen: boolean;
@@ -27,6 +28,7 @@ export const TaskModal = ({
   defaultColumnId = 'todo',
   taskToEdit,
 }: TaskModalProps) => {
+  const toast = useToast();
   const [createTask, { isLoading: isCreating }] = useCreateTaskMutation();
   const [updateTask, { isLoading: isUpdating }] = useUpdateTaskMutation();
 
@@ -86,6 +88,7 @@ export const TaskModal = ({
           priority: values.priority,
           dueDate: formattedDueDate,
         }).unwrap();
+        toast.success(`Task "${values.title}" updated!`, 'Task Updated');
       } else {
         await createTask({
           title: values.title,
@@ -95,9 +98,14 @@ export const TaskModal = ({
           priority: values.priority,
           dueDate: formattedDueDate,
         }).unwrap();
+        toast.success(`Task "${values.title}" created!`, 'Task Created');
       }
       onClose();
-    } catch {
+    } catch (err: any) {
+      toast.error(
+        err?.data?.message || 'Failed to save task. Please try again.',
+        'Error'
+      );
     }
   };
 

@@ -9,6 +9,7 @@ import {
   useCreateBoardMutation,
   useUpdateBoardMutation,
 } from '../../store/services/apiSlice';
+import { useToast } from '../common/Toast';
 
 interface BoardModalProps {
   isOpen: boolean;
@@ -35,6 +36,7 @@ export const BoardModal = ({
   boardToEdit,
   onSuccess,
 }: BoardModalProps) => {
+  const toast = useToast();
   const [createBoard, { isLoading: isCreating }] = useCreateBoardMutation();
   const [updateBoard, { isLoading: isUpdating }] = useUpdateBoardMutation();
 
@@ -83,6 +85,7 @@ export const BoardModal = ({
           description: values.description,
           color: values.color,
         }).unwrap();
+        toast.success(`Board "${values.title}" updated successfully!`, 'Board Updated');
         onClose();
         if (onSuccess) onSuccess(boardToEdit._id);
       } else {
@@ -91,10 +94,15 @@ export const BoardModal = ({
           description: values.description,
           color: values.color,
         }).unwrap();
+        toast.success(`Board "${values.title}" created successfully!`, 'Board Created');
         onClose();
         if (onSuccess && res.data?._id) onSuccess(res.data._id);
       }
-    } catch {
+    } catch (err: any) {
+      toast.error(
+        err?.data?.message || 'Failed to save board. Please try again.',
+        'Error'
+      );
     }
   };
 

@@ -26,8 +26,10 @@ import {
   useUpdateTaskMutation,
   useReorderTasksMutation,
 } from '../../store/services/apiSlice';
+import { useToast } from '../../components/common/Toast';
 
 export const HomePage = () => {
+  const toast = useToast();
   const { data: boardsData, isLoading: isBoardsLoading } = useGetBoardsQuery();
   const { data: summaryData, isLoading: isSummaryLoading } = useGetDashboardSummaryQuery();
 
@@ -88,11 +90,13 @@ export const HomePage = () => {
     if (window.confirm('Are you sure you want to delete this board and all its tasks?')) {
       try {
         await deleteBoard(boardId).unwrap();
+        toast.success('Board deleted successfully', 'Board Deleted');
         if (selectedBoardId === boardId) {
           const remaining = boards.filter((b) => b._id !== boardId);
           setSelectedBoardId(remaining.length > 0 ? remaining[0]._id : '');
         }
-      } catch {
+      } catch (err: any) {
+        toast.error(err?.data?.message || 'Failed to delete board', 'Error');
       }
     }
   };
@@ -113,7 +117,9 @@ export const HomePage = () => {
     if (window.confirm('Are you sure you want to delete this task?')) {
       try {
         await deleteTask({ id: taskId, boardId: selectedBoardId }).unwrap();
-      } catch {
+        toast.success('Task deleted successfully', 'Task Deleted');
+      } catch (err: any) {
+        toast.error(err?.data?.message || 'Failed to delete task', 'Error');
       }
     }
   };
@@ -127,7 +133,12 @@ export const HomePage = () => {
         isCompleted: nextCompleted,
         columnId: nextColumn,
       }).unwrap();
-    } catch {
+      toast.success(
+        nextCompleted ? `"${task.title}" completed!` : `"${task.title}" marked incomplete`,
+        'Task Updated'
+      );
+    } catch (err: any) {
+      toast.error(err?.data?.message || 'Failed to update task status', 'Error');
     }
   };
 

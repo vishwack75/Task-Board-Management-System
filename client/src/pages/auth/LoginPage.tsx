@@ -8,10 +8,12 @@ import type { LoginFormValues } from '../../validations/auth.validation';
 import { useLoginMutation } from '../../store/services/apiSlice';
 import { useAppDispatch } from '../../store/store';
 import { setCredentials } from '../../store/slices/authSlice';
+import { useToast } from '../../components/common/Toast';
 
 export const LoginPage = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
+  const toast = useToast();
   const [login, { isLoading }] = useLoginMutation();
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
@@ -38,12 +40,13 @@ export const LoginPage = () => {
             token: response.data.token,
           })
         );
+        toast.success(`Welcome back, ${response.data.user.name}!`, 'Signed In');
         navigate('/');
       }
     } catch (err: any) {
-      setErrorMessage(
-        err?.data?.message || 'Login failed. Please verify your credentials.'
-      );
+      const msg = err?.data?.message || 'Login failed. Please verify your credentials.';
+      setErrorMessage(msg);
+      toast.error(msg, 'Login Failed');
     }
   };
 
@@ -96,9 +99,17 @@ export const LoginPage = () => {
             </div>
 
             <div>
-              <label className="block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-1.5">
-                Password
-              </label>
+              <div className="flex items-center justify-between mb-1.5">
+                <label className="block text-xs font-semibold uppercase tracking-wider text-slate-500">
+                  Password
+                </label>
+                <Link
+                  to="/forgot-password"
+                  className="text-xs font-semibold text-pink-500 hover:text-pink-600 transition-colors"
+                >
+                  Forgot password?
+                </Link>
+              </div>
               <div className="relative">
                 <Lock className="absolute left-3.5 top-3 w-4 h-4 text-pink-300" />
                 <input

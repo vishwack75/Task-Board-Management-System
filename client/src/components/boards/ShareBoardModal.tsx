@@ -11,6 +11,7 @@ import {
   useShareBoardMutation,
   useRemoveBoardMemberMutation,
 } from '../../store/services/apiSlice';
+import { useToast } from '../common/Toast';
 
 interface ShareBoardModalProps {
   isOpen: boolean;
@@ -23,6 +24,7 @@ export const ShareBoardModal = ({
   onClose,
   board,
 }: ShareBoardModalProps) => {
+  const toast = useToast();
   const [shareBoard, { isLoading: isSharing }] = useShareBoardMutation();
   const [removeMember, { isLoading: isRemoving }] = useRemoveBoardMemberMutation();
   const [serverMessage, setServerMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
@@ -50,15 +52,19 @@ export const ShareBoardModal = ({
         role: values.role,
       }).unwrap();
       reset();
+      const successText = res.message || `Shared with ${values.email}`;
       setServerMessage({
         type: 'success',
-        text: res.message || `Shared with ${values.email}`,
+        text: successText,
       });
+      toast.success(successText, 'Board Shared');
     } catch (err: any) {
+      const errorText = err?.data?.message || 'Failed to share board';
       setServerMessage({
         type: 'error',
-        text: err?.data?.message || 'Failed to share board',
+        text: errorText,
       });
+      toast.error(errorText, 'Sharing Failed');
     }
   };
 
@@ -66,7 +72,9 @@ export const ShareBoardModal = ({
     if (!board) return;
     try {
       await removeMember({ id: board._id, email }).unwrap();
-    } catch {
+      toast.success(`Removed ${email} from board`, 'Member Removed');
+    } catch (err: any) {
+      toast.error(err?.data?.message || 'Failed to remove member', 'Error');
     }
   };
 

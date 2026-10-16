@@ -19,9 +19,11 @@ import {
 } from '../../store/services/apiSlice';
 import { useAppDispatch } from '../../store/store';
 import { updateUser } from '../../store/slices/authSlice';
+import { useToast } from '../../components/common/Toast';
 
 export const ProfilePage = () => {
   const dispatch = useAppDispatch();
+  const toast = useToast();
   const { data: profileData, isLoading: isProfileLoading } = useGetProfileQuery();
   const [updateProfile, { isLoading: isUpdatingProfile }] = useUpdateProfileMutation();
   const [uploadAvatar, { isLoading: isUploadingAvatar }] = useUploadAvatarMutation();
@@ -67,9 +69,12 @@ export const ProfilePage = () => {
       if (res.data) {
         dispatch(updateUser(res.data));
         setProfileSuccessMsg('Name updated successfully!');
+        toast.success('Your profile name has been updated.', 'Profile Updated');
       }
     } catch (err: any) {
-      setProfileErrorMsg(err?.data?.message || 'Failed to update profile');
+      const msg = err?.data?.message || 'Failed to update profile';
+      setProfileErrorMsg(msg);
+      toast.error(msg, 'Update Failed');
     }
   };
 
@@ -88,9 +93,12 @@ export const ProfilePage = () => {
       if (res.data?.user) {
         dispatch(updateUser(res.data.user));
         setProfileSuccessMsg('Avatar updated successfully!');
+        toast.success('Your profile avatar has been updated.', 'Avatar Updated');
       }
     } catch (err: any) {
-      setProfileErrorMsg(err?.data?.message || 'Failed to upload avatar image');
+      const msg = err?.data?.message || 'Failed to upload avatar image';
+      setProfileErrorMsg(msg);
+      toast.error(msg, 'Upload Failed');
     }
   };
 
@@ -103,9 +111,13 @@ export const ProfilePage = () => {
         newPassword: values.newPassword,
       }).unwrap();
       resetPasswordForm();
-      setPasswordSuccessMsg(res.message || 'Password changed successfully!');
+      const msg = res.message || 'Password changed successfully!';
+      setPasswordSuccessMsg(msg);
+      toast.success(msg, 'Password Changed');
     } catch (err: any) {
-      setPasswordErrorMsg(err?.data?.message || 'Failed to change password');
+      const msg = err?.data?.message || 'Failed to change password';
+      setPasswordErrorMsg(msg);
+      toast.error(msg, 'Password Change Failed');
     }
   };
 

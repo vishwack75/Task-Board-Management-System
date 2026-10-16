@@ -315,6 +315,8 @@ export const {
   useLoginMutation,
   useSignupMutation,
   useLogoutApiMutation,
+  useForgotPasswordMutation,
+  useResetPasswordMutation,
   useGetMeQuery,
   useGetProfileQuery,
   useUpdateProfileMutation,
