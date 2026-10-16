@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useForm } from 'react-hook-form';
+import { useForm, type SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Kanban, Mail, Lock, ArrowRight, AlertCircle } from 'lucide-react';
 import { loginSchema } from '../../validations/auth.validation';
@@ -27,7 +27,7 @@ export const LoginPage = () => {
     },
   });
 
-  const onSubmit = async (values: LoginFormValues) => {
+  const onSubmit: SubmitHandler<LoginFormValues> = async (values) => {
     setErrorMessage(null);
     try {
       const response = await login(values).unwrap();

@@ -6,6 +6,8 @@ export interface IUser extends Document {
   email: string;
   password?: string;
   avatar: string;
+  passwordResetToken?: string;
+  passwordResetExpires?: Date;
   comparePassword(candidatePassword: string): Promise<boolean>;
   createdAt: Date;
   updatedAt: Date;
@@ -38,12 +40,22 @@ const UserSchema = new Schema<IUser>(
       type: String,
       default: '',
     },
+    passwordResetToken: {
+      type: String,
+      select: false,
+    },
+    passwordResetExpires: {
+      type: Date,
+      select: false,
+    },
   },
   {
     timestamps: true,
     toJSON: {
       transform(_doc, ret: Record<string, any>) {
         delete ret.password;
+        delete ret.passwordResetToken;
+        delete ret.passwordResetExpires;
         delete ret.__v;
         return ret;
       },

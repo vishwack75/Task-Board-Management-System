@@ -1,6 +1,8 @@
 import { Request, Response, NextFunction } from 'express';
+import crypto from 'crypto';
 import { User } from '../models/User';
 import { generateToken } from '../utils/token';
+import { sendPasswordResetEmail } from '../utils/email';
 import { AuthRequest } from '../types';
 
 export const signup = async (
@@ -96,6 +98,78 @@ export const login = async (
           createdAt: user.createdAt,
         },
       },
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const forgotPassword = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
+  try {
+    const { email } = req.body;
+
+    const user = await User.findOne({ email });
+    if (!user) {
+      res.status(200).json({
+        success: true,
+        message: 'If an account with that email exists, a password reset link has been sent.',
+      });
+      return;
+    }
+
+    const resetToken = crypto.randomBytes(32).toString('hex');
+    const hashedToken = crypto.createHash('sha256').update(resetToken).digest('hex');
+
+    user.passwordResetToken = hashedToken;
+    user.passwordResetExpires = new Date(Date.now() + 60 * 60 * 1000);
+    await user.save({ validateBeforeSave: false });
+
+    await sendPasswordResetEmail(user.email, resetToken, user.name);
+
+    res.status(200).json({
+      success: true,
+      message: 'Password reset link has been sent to your email address.',
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const resetPassword = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
+  try {
+    const { token, password } = req.body;
+
+    const hashedToken = crypto.createHash('sha256').update(token).digest('hex');
+
+    const user = await User.findOne({
+      passwordResetToken: hashedToken,
+      passwordResetExpires: { $gt: new Date() },
+    });
+
+    if (!user) {
+      res.status(400).json({
+        success: false,
+        message: 'Invalid or expired password reset link. Please request a new one.',
+      });
+      return;
+    }
+
+    user.password = password;
+    user.passwordResetToken = undefined;
+    user.passwordResetExpires = undefined;
+    await user.save();
+
+    res.status(200).json({
+      success: true,
+      message: 'Password reset successful! You can now log in with your new password.',
     });
   } catch (error) {
     next(error);

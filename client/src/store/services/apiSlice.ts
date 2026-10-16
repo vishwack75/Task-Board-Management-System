@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import type { RootState } from '../store';
+type AuthState = { auth: { token: string | null } };
 import type {
   ApiResponse,
   IBoard,
@@ -11,9 +11,9 @@ import type {
 export const apiSlice = createApi({
   reducerPath: 'api',
   baseQuery: fetchBaseQuery({
-    baseUrl: '/api',
+    baseUrl: import.meta.env.VITE_API_URL || '/api',
     prepareHeaders: (headers, { getState }) => {
-      const token = (getState() as RootState).auth.token || localStorage.getItem('token');
+      const token = (getState() as AuthState).auth.token || localStorage.getItem('token');
       if (token) {
         headers.set('Authorization', `Bearer ${token}`);
       }
@@ -52,6 +52,25 @@ export const apiSlice = createApi({
         method: 'POST',
       }),
       invalidatesTags: ['Auth', 'User', 'Board', 'Task', 'Dashboard'],
+    }),
+
+    forgotPassword: builder.mutation<ApiResponse<null>, { email: string }>({
+      query: (body) => ({
+        url: '/auth/forgot-password',
+        method: 'POST',
+        body,
+      }),
+    }),
+
+    resetPassword: builder.mutation<
+      ApiResponse<null>,
+      { token: string; password: string }
+    >({
+      query: (body) => ({
+        url: '/auth/reset-password',
+        method: 'POST',
+        body,
+      }),
     }),
 
     getMe: builder.query<ApiResponse<IUser>, void>({

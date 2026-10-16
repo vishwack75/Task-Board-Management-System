@@ -28,5 +28,25 @@ export const loginValidation = z.object({
     .min(1, 'Password is required'),
 });
 
+export const forgotPasswordValidation = z.object({
+  email: z
+    .string({ required_error: 'Email is required' })
+    .trim()
+    .toLowerCase()
+    .email('Please provide a valid email address'),
+});
+
+export const resetPasswordValidation = z.object({
+  token: z
+    .string({ required_error: 'Reset token is required' })
+    .min(1, 'Reset token is required'),
+  password: z
+    .string({ required_error: 'New password is required' })
+    .min(8, 'Password must be at least 8 characters long')
+    .max(16, 'Password cannot exceed 16 characters'),
+});
+
 export type SignupInput = z.infer<typeof signupValidation>;
 export type LoginInput = z.infer<typeof loginValidation>;
+export type ForgotPasswordInput = z.infer<typeof forgotPasswordValidation>;
+export type ResetPasswordInput = z.infer<typeof resetPasswordValidation>;
