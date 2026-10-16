@@ -101,6 +101,12 @@ export const TaskModal = ({
     }
   };
 
+  const inputBase =
+    'w-full px-4 py-2.5 rounded-xl bg-pink-50/60 border text-slate-700 placeholder-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-pink-300/50 transition-all';
+  const selectBase =
+    'w-full px-3 py-2.5 rounded-xl bg-pink-50/60 border border-pink-200 text-slate-600 text-sm focus:outline-none focus:ring-2 focus:ring-pink-300/50';
+  const labelBase = 'block text-xs font-semibold uppercase tracking-wider text-slate-500 mb-1.5';
+
   return (
     <Modal
       isOpen={isOpen}
@@ -114,34 +120,28 @@ export const TaskModal = ({
     >
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         <div>
-          <label className="block text-xs font-semibold uppercase tracking-wider text-zinc-300 mb-1.5">
-            Task Title *
-          </label>
+          <label className={labelBase}>Task Title *</label>
           <input
             type="text"
             placeholder="e.g. Design navigation bar"
             {...register('title')}
-            className={`w-full px-4 py-2.5 rounded-xl bg-zinc-800/80 border text-zinc-100 placeholder-zinc-500 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/50 ${
-              errors.title ? 'border-rose-500' : 'border-zinc-700'
-            }`}
+            className={`${inputBase} ${errors.title ? 'border-rose-400' : 'border-pink-200'}`}
           />
           {errors.title && (
-            <p className="text-xs text-rose-400 mt-1">{errors.title.message}</p>
+            <p className="text-xs text-rose-500 mt-1">{errors.title.message}</p>
           )}
         </div>
 
         <div>
-          <label className="block text-xs font-semibold uppercase tracking-wider text-zinc-300 mb-1.5">
-            Description
-          </label>
+          <label className={labelBase}>Description</label>
           <textarea
             rows={3}
             placeholder="Add relevant notes, links, or checklist items..."
             {...register('description')}
-            className="w-full px-4 py-2.5 rounded-xl bg-zinc-800/80 border border-zinc-700 text-zinc-100 placeholder-zinc-500 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/50 resize-none"
+            className={`${inputBase} border-pink-200 resize-none`}
           />
           {errors.description && (
-            <p className="text-xs text-rose-400 mt-1">
+            <p className="text-xs text-rose-500 mt-1">
               {errors.description.message}
             </p>
           )}
@@ -149,13 +149,8 @@ export const TaskModal = ({
 
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
           <div>
-            <label className="block text-xs font-semibold uppercase tracking-wider text-zinc-300 mb-1.5">
-              Column
-            </label>
-            <select
-              {...register('columnId')}
-              className="w-full px-3 py-2.5 rounded-xl bg-zinc-800/80 border border-zinc-700 text-zinc-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/50"
-            >
+            <label className={labelBase}>Column</label>
+            <select {...register('columnId')} className={selectBase}>
               {columns.map((col) => (
                 <option key={col.id} value={col.id}>
                   {col.name}
@@ -165,13 +160,8 @@ export const TaskModal = ({
           </div>
 
           <div>
-            <label className="block text-xs font-semibold uppercase tracking-wider text-zinc-300 mb-1.5">
-              Priority
-            </label>
-            <select
-              {...register('priority')}
-              className="w-full px-3 py-2.5 rounded-xl bg-zinc-800/80 border border-zinc-700 text-zinc-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/50"
-            >
+            <label className={labelBase}>Priority</label>
+            <select {...register('priority')} className={selectBase}>
               <option value="low">Low</option>
               <option value="medium">Medium</option>
               <option value="high">High</option>
@@ -180,29 +170,27 @@ export const TaskModal = ({
           </div>
 
           <div>
-            <label className="block text-xs font-semibold uppercase tracking-wider text-zinc-300 mb-1.5">
-              Due Date
-            </label>
+            <label className={labelBase}>Due Date</label>
             <input
               type="date"
               {...register('dueDate')}
-              className="w-full px-3 py-2.5 rounded-xl bg-zinc-800/80 border border-zinc-700 text-zinc-200 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/50"
+              className={selectBase}
             />
           </div>
         </div>
 
-        <div className="flex items-center justify-end gap-3 pt-4 border-t border-zinc-800">
+        <div className="flex items-center justify-end gap-3 pt-4 border-t border-pink-100">
           <button
             type="button"
             onClick={onClose}
-            className="px-4 py-2.5 text-sm font-medium text-zinc-300 hover:text-white hover:bg-zinc-800 rounded-xl transition-colors"
+            className="px-4 py-2.5 text-sm font-medium text-slate-500 hover:text-slate-700 hover:bg-slate-50 rounded-xl transition-colors"
           >
             Cancel
           </button>
           <button
             type="submit"
             disabled={isCreating || isUpdating}
-            className="px-5 py-2.5 text-sm font-semibold text-white bg-indigo-600 hover:bg-indigo-500 disabled:opacity-50 rounded-xl shadow-lg shadow-indigo-600/30 transition-all"
+            className="px-5 py-2.5 text-sm font-semibold text-white bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-400 hover:to-rose-400 disabled:opacity-50 rounded-xl shadow-lg shadow-pink-400/25 transition-all"
           >
             {isCreating || isUpdating
               ? 'Saving...'

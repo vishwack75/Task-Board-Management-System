@@ -39,20 +39,20 @@ export const TaskCard = ({
     <div
       draggable={canEdit}
       onDragStart={(e) => onDragStart(e, task)}
-      className={`group relative rounded-xl bg-zinc-900 border p-4 shadow-sm transition-all duration-200 select-none ${
-        canEdit ? 'cursor-grab active:cursor-grabbing hover:shadow-md hover:border-zinc-700' : ''
+      className={`group relative rounded-xl bg-white border p-4 shadow-sm transition-all duration-200 select-none ${
+        canEdit ? 'cursor-grab active:cursor-grabbing hover:shadow-md' : ''
       } ${
         task.isCompleted
-          ? 'border-emerald-500/20 bg-zinc-900/40 opacity-75'
+          ? 'border-emerald-200 bg-emerald-50/30 opacity-75'
           : isOverdue
-          ? 'border-rose-500/40 bg-zinc-900'
-          : 'border-zinc-800'
+          ? 'border-rose-300 bg-rose-50/30'
+          : 'border-pink-100 hover:border-pink-200'
       }`}
     >
       <div className="flex items-start justify-between gap-2 mb-2.5">
         <div className="flex items-center gap-2">
           {canEdit && (
-            <div className="text-zinc-600 group-hover:text-zinc-400 cursor-grab active:cursor-grabbing transition-colors -ml-1">
+            <div className="text-slate-300 group-hover:text-pink-300 cursor-grab active:cursor-grabbing transition-colors -ml-1">
               <GripVertical className="w-4 h-4" />
             </div>
           )}
@@ -63,7 +63,7 @@ export const TaskCard = ({
           {canEdit && (
             <button
               onClick={() => setMenuOpen(!menuOpen)}
-              className="p-1 text-zinc-500 hover:text-zinc-300 hover:bg-zinc-800 rounded-lg transition-colors"
+              className="p-1 text-slate-300 hover:text-slate-500 hover:bg-pink-50 rounded-lg transition-colors"
             >
               <MoreVertical className="w-4 h-4" />
             </button>
@@ -71,7 +71,7 @@ export const TaskCard = ({
 
           {menuOpen && (
             <div
-              className="absolute right-0 top-full mt-1 w-32 rounded-xl bg-zinc-800 border border-zinc-700 shadow-xl py-1 z-30"
+              className="absolute right-0 top-full mt-1 w-32 rounded-xl bg-white border border-pink-100 shadow-xl shadow-pink-100/40 py-1 z-30"
               onClick={(e) => e.stopPropagation()}
             >
               <button
@@ -79,7 +79,7 @@ export const TaskCard = ({
                   setMenuOpen(false);
                   onEdit(task);
                 }}
-                className="w-full text-left px-3 py-1.5 text-xs text-zinc-200 hover:bg-zinc-700/60"
+                className="w-full text-left px-3 py-1.5 text-xs text-slate-600 hover:bg-pink-50"
               >
                 Edit Task
               </button>
@@ -88,7 +88,7 @@ export const TaskCard = ({
                   setMenuOpen(false);
                   onDelete(task._id);
                 }}
-                className="w-full text-left px-3 py-1.5 text-xs text-rose-400 hover:bg-rose-500/10"
+                className="w-full text-left px-3 py-1.5 text-xs text-rose-500 hover:bg-rose-50"
               >
                 Delete Task
               </button>
@@ -101,7 +101,7 @@ export const TaskCard = ({
         <button
           onClick={() => canEdit && onToggleComplete(task)}
           disabled={!canEdit}
-          className="mt-0.5 text-zinc-500 hover:text-emerald-400 transition-colors disabled:cursor-default"
+          className="mt-0.5 text-slate-300 hover:text-emerald-400 transition-colors disabled:cursor-default"
         >
           {task.isCompleted ? (
             <CheckCircle2 className="w-4 h-4 text-emerald-400" />
@@ -112,8 +112,8 @@ export const TaskCard = ({
         <h4
           className={`text-sm font-semibold leading-snug ${
             task.isCompleted
-              ? 'line-through text-zinc-500'
-              : 'text-zinc-100 group-hover:text-white'
+              ? 'line-through text-slate-400'
+              : 'text-slate-700 group-hover:text-slate-900'
           }`}
         >
           {task.title}
@@ -121,20 +121,20 @@ export const TaskCard = ({
       </div>
 
       {task.description && (
-        <p className="text-xs text-zinc-400 line-clamp-2 mb-3 pl-6">
+        <p className="text-xs text-slate-400 line-clamp-2 mb-3 pl-6">
           {task.description}
         </p>
       )}
 
-      <div className="flex items-center justify-between pt-2.5 border-t border-zinc-800/80 text-xs text-zinc-400">
+      <div className="flex items-center justify-between pt-2.5 border-t border-pink-50 text-xs text-slate-400">
         {formattedDueDate ? (
           <div
             className={`flex items-center gap-1.5 px-2 py-0.5 rounded-md font-medium ${
               isOverdue
-                ? 'bg-rose-500/10 text-rose-400'
+                ? 'bg-rose-50 text-rose-500 border border-rose-200'
                 : task.isCompleted
-                ? 'text-zinc-500'
-                : 'text-zinc-400 bg-zinc-800/60'
+                ? 'text-slate-400'
+                : 'text-slate-500 bg-slate-50 border border-slate-100'
             }`}
           >
             <Calendar className="w-3.5 h-3.5" />
@@ -147,7 +147,7 @@ export const TaskCard = ({
 
         {task.creator && (
           <div
-            className="w-6 h-6 rounded-full bg-zinc-800 border border-zinc-700 text-zinc-300 flex items-center justify-center text-[10px] font-bold"
+            className="w-6 h-6 rounded-full bg-pink-50 border border-pink-200 text-pink-500 flex items-center justify-center text-[10px] font-bold"
             title={`Created by ${task.creator.name}`}
           >
             {task.creator.name ? task.creator.name[0].toUpperCase() : 'U'}

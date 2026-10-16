@@ -13,7 +13,7 @@ export const StatCards = ({ data, isLoading }: StatCardsProps) => {
         {[1, 2, 3, 4].map((i) => (
           <div
             key={i}
-            className="h-28 rounded-2xl bg-zinc-900/50 border border-zinc-800/80 animate-pulse"
+            className="h-28 rounded-2xl bg-pink-50 border border-pink-100 animate-pulse"
           />
         ))}
       </div>
@@ -34,9 +34,9 @@ export const StatCards = ({ data, isLoading }: StatCardsProps) => {
       value: summary.totalTasks,
       subtitle: `${summary.totalBoards} active boards`,
       icon: Layers,
-      gradient: 'from-indigo-500/10 via-indigo-500/5 to-transparent',
-      borderColor: 'group-hover:border-indigo-500/40',
-      iconColor: 'text-indigo-400 bg-indigo-500/10',
+      gradient: 'from-pink-500/10 via-pink-500/5 to-transparent',
+      borderColor: 'group-hover:border-pink-400/60',
+      iconColor: 'text-pink-500 bg-pink-50',
     },
     {
       title: 'Completed',
@@ -44,8 +44,8 @@ export const StatCards = ({ data, isLoading }: StatCardsProps) => {
       subtitle: `${summary.completionRate}% completion rate`,
       icon: CheckCircle2,
       gradient: 'from-emerald-500/10 via-emerald-500/5 to-transparent',
-      borderColor: 'group-hover:border-emerald-500/40',
-      iconColor: 'text-emerald-400 bg-emerald-500/10',
+      borderColor: 'group-hover:border-emerald-400/60',
+      iconColor: 'text-emerald-500 bg-emerald-50',
     },
     {
       title: 'Pending',
@@ -53,8 +53,8 @@ export const StatCards = ({ data, isLoading }: StatCardsProps) => {
       subtitle: 'In progress or to do',
       icon: Clock,
       gradient: 'from-sky-500/10 via-sky-500/5 to-transparent',
-      borderColor: 'group-hover:border-sky-500/40',
-      iconColor: 'text-sky-400 bg-sky-500/10',
+      borderColor: 'group-hover:border-sky-400/60',
+      iconColor: 'text-sky-500 bg-sky-50',
     },
     {
       title: 'Overdue',
@@ -62,8 +62,8 @@ export const StatCards = ({ data, isLoading }: StatCardsProps) => {
       subtitle: summary.overdueTasks > 0 ? 'Needs attention' : 'All on track',
       icon: AlertTriangle,
       gradient: 'from-rose-500/10 via-rose-500/5 to-transparent',
-      borderColor: 'group-hover:border-rose-500/40',
-      iconColor: 'text-rose-400 bg-rose-500/10',
+      borderColor: 'group-hover:border-rose-400/60',
+      iconColor: 'text-rose-500 bg-rose-50',
     },
   ];
 
@@ -74,20 +74,20 @@ export const StatCards = ({ data, isLoading }: StatCardsProps) => {
         return (
           <div
             key={c.title}
-            className={`group relative overflow-hidden rounded-2xl bg-zinc-900/60 backdrop-blur-sm border border-zinc-800/80 p-5 transition-all duration-300 hover:shadow-xl ${c.borderColor}`}
+            className={`group relative overflow-hidden rounded-2xl bg-white border border-pink-100 p-5 transition-all duration-300 hover:shadow-xl hover:shadow-pink-100/60 ${c.borderColor}`}
           >
             <div
               className={`absolute inset-0 bg-gradient-to-br ${c.gradient} opacity-50 group-hover:opacity-100 transition-opacity`}
             />
             <div className="relative flex items-start justify-between">
               <div>
-                <p className="text-xs font-medium text-zinc-400 uppercase tracking-wider">
+                <p className="text-xs font-medium text-slate-400 uppercase tracking-wider">
                   {c.title}
                 </p>
-                <h4 className="text-2xl sm:text-3xl font-bold text-white mt-1">
+                <h4 className="text-2xl sm:text-3xl font-bold text-slate-800 mt-1">
                   {c.value}
                 </h4>
-                <p className="text-xs text-zinc-400 mt-1 font-medium">
+                <p className="text-xs text-slate-400 mt-1 font-medium">
                   {c.subtitle}
                 </p>
               </div>

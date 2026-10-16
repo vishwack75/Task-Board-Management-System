@@ -178,16 +178,16 @@ export const HomePage = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-zinc-950 text-zinc-100 flex flex-col">
+    <div className="min-h-screen bg-gradient-to-br from-pink-50 via-white to-rose-50 text-slate-800 flex flex-col">
       <Navbar />
 
       <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <StatCards data={summaryData?.data} isLoading={isSummaryLoading} />
 
-        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 mb-6 pb-4 border-b border-zinc-800">
+        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 mb-6 pb-4 border-b border-pink-100">
           <div className="flex items-center gap-3 overflow-x-auto max-w-full pb-2 md:pb-0 scrollbar-none">
-            <span className="text-xs font-semibold uppercase tracking-wider text-zinc-500 flex items-center gap-1.5 shrink-0">
-              <Layers className="w-4 h-4 text-indigo-400" />
+            <span className="text-xs font-semibold uppercase tracking-wider text-slate-400 flex items-center gap-1.5 shrink-0">
+              <Layers className="w-4 h-4 text-pink-400" />
               Boards:
             </span>
 
@@ -199,17 +199,17 @@ export const HomePage = () => {
                   onClick={() => setSelectedBoardId(b._id)}
                   className={`flex items-center gap-2 px-3.5 py-1.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all ${
                     isSelected
-                      ? 'bg-zinc-800 text-white shadow-md border border-zinc-700'
-                      : 'text-zinc-400 hover:text-zinc-200 hover:bg-zinc-900 border border-transparent'
+                      ? 'bg-white text-slate-700 shadow-md border border-pink-200'
+                      : 'text-slate-400 hover:text-slate-600 hover:bg-white/70 border border-transparent'
                   }`}
                 >
                   <span
                     className="w-2.5 h-2.5 rounded-full"
-                    style={{ backgroundColor: b.color || '#6366f1' }}
+                    style={{ backgroundColor: b.color || '#ec4899' }}
                   />
                   <span>{b.title}</span>
                   {!b.isOwner && (
-                    <span className="text-[10px] text-zinc-500 uppercase">
+                    <span className="text-[10px] text-slate-400 uppercase">
                       (shared)
                     </span>
                   )}
@@ -222,7 +222,7 @@ export const HomePage = () => {
                 setBoardToEdit(null);
                 setIsBoardModalOpen(true);
               }}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold bg-indigo-600/10 hover:bg-indigo-600/20 text-indigo-400 border border-indigo-500/20 transition-colors whitespace-nowrap shrink-0"
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold bg-pink-50 hover:bg-pink-100 text-pink-500 border border-pink-200 transition-colors whitespace-nowrap shrink-0"
             >
               <Plus className="w-3.5 h-3.5" />
               <span>New Board</span>
@@ -234,9 +234,9 @@ export const HomePage = () => {
               {activeBoard.isOwner && (
                 <button
                   onClick={() => setIsShareModalOpen(true)}
-                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold bg-zinc-800/80 hover:bg-zinc-800 text-zinc-200 border border-zinc-700 transition-colors"
+                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold bg-white hover:bg-pink-50 text-slate-600 border border-pink-200 transition-colors"
                 >
-                  <Share2 className="w-3.5 h-3.5 text-indigo-400" />
+                  <Share2 className="w-3.5 h-3.5 text-pink-400" />
                   <span>Share Board</span>
                 </button>
               )}
@@ -247,7 +247,7 @@ export const HomePage = () => {
                     setBoardToEdit(activeBoard);
                     setIsBoardModalOpen(true);
                   }}
-                  className="p-2 text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800 rounded-xl transition-colors border border-zinc-800"
+                  className="p-2 text-slate-400 hover:text-slate-600 hover:bg-pink-50 rounded-xl transition-colors border border-pink-100"
                   title="Edit board details"
                 >
                   <Edit2 className="w-3.5 h-3.5" />
@@ -257,7 +257,7 @@ export const HomePage = () => {
               {activeBoard.isOwner && (
                 <button
                   onClick={() => handleDeleteBoard(activeBoard._id)}
-                  className="p-2 text-zinc-400 hover:text-rose-400 hover:bg-rose-500/10 rounded-xl transition-colors border border-zinc-800 hover:border-rose-500/30"
+                  className="p-2 text-slate-400 hover:text-rose-500 hover:bg-rose-50 rounded-xl transition-colors border border-pink-100 hover:border-rose-200"
                   title="Delete board"
                 >
                   <Trash2 className="w-3.5 h-3.5" />
@@ -274,20 +274,20 @@ export const HomePage = () => {
                 <div className="flex items-center gap-3">
                   <span
                     className="w-3 h-3 rounded-full"
-                    style={{ backgroundColor: activeBoard.color || '#6366f1' }}
+                    style={{ backgroundColor: activeBoard.color || '#ec4899' }}
                   />
-                  <h2 className="text-xl sm:text-2xl font-bold text-white tracking-tight">
+                  <h2 className="text-xl sm:text-2xl font-bold text-slate-800 tracking-tight">
                     {activeBoard.title}
                   </h2>
 
                   {activeBoard.userRole === 'viewer' && (
-                    <span className="flex items-center gap-1 px-2 py-0.5 rounded-md text-[11px] font-semibold bg-zinc-800 text-zinc-400 border border-zinc-700">
+                    <span className="flex items-center gap-1 px-2 py-0.5 rounded-md text-[11px] font-semibold bg-slate-50 text-slate-500 border border-slate-200">
                       <Eye className="w-3 h-3" />
                       View Only
                     </span>
                   )}
                   {activeBoard.isOwner && (
-                    <span className="flex items-center gap-1 px-2 py-0.5 rounded-md text-[11px] font-semibold bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">
+                    <span className="flex items-center gap-1 px-2 py-0.5 rounded-md text-[11px] font-semibold bg-pink-50 text-pink-500 border border-pink-200">
                       <Shield className="w-3 h-3" />
                       Owner
                     </span>
@@ -295,7 +295,7 @@ export const HomePage = () => {
                 </div>
 
                 {activeBoard.description && (
-                  <p className="text-xs text-zinc-400 mt-1">
+                  <p className="text-xs text-slate-400 mt-1">
                     {activeBoard.description}
                   </p>
                 )}
@@ -304,7 +304,7 @@ export const HomePage = () => {
               {canEditBoard && (
                 <button
                   onClick={() => handleAddTask('todo')}
-                  className="flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold bg-indigo-600 hover:bg-indigo-500 text-white shadow-lg shadow-indigo-600/30 transition-all self-start sm:self-auto"
+                  className="flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-400 hover:to-rose-400 text-white shadow-lg shadow-pink-400/25 transition-all self-start sm:self-auto"
                 >
                   <Plus className="w-4 h-4" />
                   <span>Add Task</span>
@@ -331,7 +331,7 @@ export const HomePage = () => {
                 {[1, 2, 3].map((i) => (
                   <div
                     key={i}
-                    className="h-96 rounded-2xl bg-zinc-900/50 border border-zinc-800 animate-pulse"
+                    className="h-96 rounded-2xl bg-pink-50 border border-pink-100 animate-pulse"
                   />
                 ))}
               </div>
@@ -361,14 +361,14 @@ export const HomePage = () => {
             )}
           </div>
         ) : isBoardsLoading ? (
-          <div className="h-96 rounded-3xl bg-zinc-900/40 border border-zinc-800 animate-pulse" />
+          <div className="h-96 rounded-3xl bg-pink-50 border border-pink-100 animate-pulse" />
         ) : (
-          <div className="flex flex-col items-center justify-center py-20 px-4 rounded-3xl bg-zinc-900/30 border border-zinc-800/80 text-center">
-            <div className="w-16 h-16 rounded-3xl bg-indigo-600/10 text-indigo-400 flex items-center justify-center mb-4">
+          <div className="flex flex-col items-center justify-center py-20 px-4 rounded-3xl bg-white border border-pink-100 shadow-sm text-center">
+            <div className="w-16 h-16 rounded-3xl bg-pink-50 text-pink-400 flex items-center justify-center mb-4">
               <Kanban className="w-8 h-8" />
             </div>
-            <h3 className="text-xl font-bold text-white mb-2">No boards created yet</h3>
-            <p className="text-sm text-zinc-400 max-w-sm mb-6">
+            <h3 className="text-xl font-bold text-slate-800 mb-2">No boards created yet</h3>
+            <p className="text-sm text-slate-400 max-w-sm mb-6">
               Get started by creating your first task board to organize tasks and collaborate.
             </p>
             <button
@@ -376,7 +376,7 @@ export const HomePage = () => {
                 setBoardToEdit(null);
                 setIsBoardModalOpen(true);
               }}
-              className="px-5 py-2.5 rounded-xl font-semibold text-white bg-indigo-600 hover:bg-indigo-500 shadow-lg shadow-indigo-600/30 transition-all flex items-center gap-2"
+              className="px-5 py-2.5 rounded-xl font-semibold text-white bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-400 hover:to-rose-400 shadow-lg shadow-pink-400/25 transition-all flex items-center gap-2"
             >
               <Plus className="w-4 h-4" />
               <span>Create Your First Board</span>

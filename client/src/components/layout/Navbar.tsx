@@ -36,19 +36,19 @@ export const Navbar = () => {
   const isActive = (path: string) => location.pathname === path;
 
   return (
-    <nav className="sticky top-0 z-40 w-full bg-zinc-950/80 backdrop-blur-md border-b border-zinc-800/80">
+    <nav className="sticky top-0 z-40 w-full bg-white/90 backdrop-blur-md border-b border-pink-100 shadow-sm shadow-pink-100/50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           <div className="flex items-center gap-8">
             <Link to="/" className="flex items-center gap-2.5 group">
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 via-indigo-500 to-violet-500 flex items-center justify-center shadow-lg shadow-indigo-500/20 group-hover:scale-105 transition-transform">
+              <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-pink-500 via-rose-400 to-fuchsia-500 flex items-center justify-center shadow-lg shadow-pink-400/30 group-hover:scale-105 transition-transform">
                 <Kanban className="w-5 h-5 text-white" />
               </div>
               <div>
-                <span className="text-lg font-bold bg-gradient-to-r from-white via-zinc-200 to-zinc-400 bg-clip-text text-transparent">
+                <span className="text-lg font-bold bg-gradient-to-r from-pink-600 via-rose-500 to-fuchsia-500 bg-clip-text text-transparent">
                   TaskFlow
                 </span>
-                <span className="block text-[10px] text-zinc-500 font-medium tracking-wider uppercase">
+                <span className="block text-[10px] text-pink-400 font-medium tracking-wider uppercase">
                   Management
                 </span>
               </div>
@@ -59,22 +59,22 @@ export const Navbar = () => {
                 to="/"
                 className={`flex items-center gap-2 px-3.5 py-2 rounded-lg text-sm font-medium transition-colors ${
                   isActive('/')
-                    ? 'bg-zinc-800/80 text-white shadow-sm'
-                    : 'text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800/40'
+                    ? 'bg-pink-50 text-pink-700 shadow-sm border border-pink-200'
+                    : 'text-slate-500 hover:text-pink-600 hover:bg-pink-50/60'
                 }`}
               >
-                <LayoutDashboard className="w-4 h-4 text-indigo-400" />
+                <LayoutDashboard className="w-4 h-4 text-pink-400" />
                 Task Board
               </Link>
               <Link
                 to="/profile"
                 className={`flex items-center gap-2 px-3.5 py-2 rounded-lg text-sm font-medium transition-colors ${
                   isActive('/profile')
-                    ? 'bg-zinc-800/80 text-white shadow-sm'
-                    : 'text-zinc-400 hover:text-zinc-200 hover:bg-zinc-800/40'
+                    ? 'bg-pink-50 text-pink-700 shadow-sm border border-pink-200'
+                    : 'text-slate-500 hover:text-pink-600 hover:bg-pink-50/60'
                 }`}
               >
-                <User className="w-4 h-4 text-violet-400" />
+                <User className="w-4 h-4 text-fuchsia-400" />
                 Profile
               </Link>
             </div>
@@ -83,24 +83,24 @@ export const Navbar = () => {
           <div className="hidden md:flex items-center gap-4">
             <Link
               to="/profile"
-              className="flex items-center gap-3 p-1.5 pr-3 rounded-full bg-zinc-900 border border-zinc-800 hover:border-zinc-700 transition-colors"
+              className="flex items-center gap-3 p-1.5 pr-3 rounded-full bg-pink-50 border border-pink-200 hover:border-pink-300 transition-colors"
             >
               {user?.avatar ? (
                 <img
                   src={user.avatar}
                   alt={user.name}
-                  className="w-8 h-8 rounded-full object-cover border border-zinc-700"
+                  className="w-8 h-8 rounded-full object-cover border border-pink-200"
                 />
               ) : (
-                <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-indigo-500 to-purple-600 text-white font-semibold text-xs flex items-center justify-center">
+                <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-pink-400 to-fuchsia-500 text-white font-semibold text-xs flex items-center justify-center">
                   {getInitials(user?.name)}
                 </div>
               )}
               <div className="text-left">
-                <p className="text-xs font-semibold text-zinc-200 leading-tight">
+                <p className="text-xs font-semibold text-slate-700 leading-tight">
                   {user?.name}
                 </p>
-                <p className="text-[11px] text-zinc-500 truncate max-w-[130px]">
+                <p className="text-[11px] text-pink-400 truncate max-w-[130px]">
                   {user?.email}
                 </p>
               </div>
@@ -108,7 +108,7 @@ export const Navbar = () => {
 
             <button
               onClick={handleLogout}
-              className="flex items-center gap-2 px-3.5 py-2 text-sm font-medium text-rose-400 hover:text-rose-300 hover:bg-rose-500/10 rounded-lg transition-colors border border-transparent hover:border-rose-500/20"
+              className="flex items-center gap-2 px-3.5 py-2 text-sm font-medium text-rose-500 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-colors border border-transparent hover:border-rose-200"
               title="Logout"
             >
               <LogOut className="w-4 h-4" />
@@ -119,7 +119,7 @@ export const Navbar = () => {
           <div className="flex md:hidden">
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="p-2 rounded-lg text-zinc-400 hover:text-white hover:bg-zinc-800"
+              className="p-2 rounded-lg text-slate-500 hover:text-pink-600 hover:bg-pink-50"
             >
               {mobileMenuOpen ? (
                 <X className="w-6 h-6" />
@@ -132,17 +132,17 @@ export const Navbar = () => {
       </div>
 
       {mobileMenuOpen && (
-        <div className="md:hidden border-b border-zinc-800 bg-zinc-950 px-4 pt-2 pb-4 space-y-2">
+        <div className="md:hidden border-b border-pink-100 bg-white px-4 pt-2 pb-4 space-y-2">
           <Link
             to="/"
             onClick={() => setMobileMenuOpen(false)}
             className={`flex items-center gap-2 px-3 py-2.5 rounded-lg text-sm font-medium ${
               isActive('/')
-                ? 'bg-zinc-800 text-white'
-                : 'text-zinc-400 hover:bg-zinc-900'
+                ? 'bg-pink-50 text-pink-700 border border-pink-200'
+                : 'text-slate-500 hover:bg-pink-50/60'
             }`}
           >
-            <LayoutDashboard className="w-4 h-4 text-indigo-400" />
+            <LayoutDashboard className="w-4 h-4 text-pink-400" />
             Task Board
           </Link>
           <Link
@@ -150,11 +150,11 @@ export const Navbar = () => {
             onClick={() => setMobileMenuOpen(false)}
             className={`flex items-center gap-2 px-3 py-2.5 rounded-lg text-sm font-medium ${
               isActive('/profile')
-                ? 'bg-zinc-800 text-white'
-                : 'text-zinc-400 hover:bg-zinc-900'
+                ? 'bg-pink-50 text-pink-700 border border-pink-200'
+                : 'text-slate-500 hover:bg-pink-50/60'
             }`}
           >
-            <User className="w-4 h-4 text-violet-400" />
+            <User className="w-4 h-4 text-fuchsia-400" />
             Profile ({user?.name})
           </Link>
           <button
@@ -162,7 +162,7 @@ export const Navbar = () => {
               setMobileMenuOpen(false);
               handleLogout();
             }}
-            className="w-full flex items-center gap-2 px-3 py-2.5 rounded-lg text-sm font-medium text-rose-400 hover:bg-rose-500/10"
+            className="w-full flex items-center gap-2 px-3 py-2.5 rounded-lg text-sm font-medium text-rose-500 hover:bg-rose-50"
           >
             <LogOut className="w-4 h-4" />
             Logout

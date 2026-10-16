@@ -48,15 +48,28 @@ export const BoardColumn = ({
     }
   };
 
-  const columnAccents: Record<string, { bg: string; dot: string }> = {
-    todo: { bg: 'bg-indigo-500/10 text-indigo-400', dot: 'bg-indigo-500' },
-    'in-progress': { bg: 'bg-amber-500/10 text-amber-400', dot: 'bg-amber-500' },
-    done: { bg: 'bg-emerald-500/10 text-emerald-400', dot: 'bg-emerald-500' },
+  const columnAccents: Record<string, { header: string; dot: string; badge: string }> = {
+    todo: {
+      header: 'text-pink-600',
+      dot: 'bg-pink-400',
+      badge: 'bg-pink-50 text-pink-600 border-pink-200',
+    },
+    'in-progress': {
+      header: 'text-amber-600',
+      dot: 'bg-amber-400',
+      badge: 'bg-amber-50 text-amber-600 border-amber-200',
+    },
+    done: {
+      header: 'text-emerald-600',
+      dot: 'bg-emerald-400',
+      badge: 'bg-emerald-50 text-emerald-600 border-emerald-200',
+    },
   };
 
   const accent = columnAccents[column.id] || {
-    bg: 'bg-zinc-500/10 text-zinc-400',
-    dot: 'bg-zinc-400',
+    header: 'text-slate-600',
+    dot: 'bg-slate-400',
+    badge: 'bg-slate-50 text-slate-500 border-slate-200',
   };
 
   return (
@@ -64,18 +77,18 @@ export const BoardColumn = ({
       onDragOver={handleDragOver}
       onDragLeave={handleDragLeave}
       onDrop={handleDrop}
-      className={`flex flex-col flex-1 min-w-[280px] max-w-sm rounded-2xl bg-zinc-950/60 border p-4 transition-all duration-200 ${
+      className={`flex flex-col flex-1 min-w-[280px] max-w-sm rounded-2xl bg-white border p-4 transition-all duration-200 shadow-sm ${
         isDragOver
-          ? 'border-indigo-500/60 ring-2 ring-indigo-500/20 bg-zinc-900/40'
-          : 'border-zinc-800/80'
+          ? 'border-pink-400/60 ring-2 ring-pink-300/30 bg-pink-50/30'
+          : 'border-pink-100'
       }`}
     >
-      <div className="flex items-center justify-between mb-4 pb-2 border-b border-zinc-850">
+      <div className="flex items-center justify-between mb-4 pb-2 border-b border-pink-50">
         <div className="flex items-center gap-2.5">
           <span className={`w-2 h-2 rounded-full ${accent.dot}`} />
-          <h3 className="font-semibold text-sm text-zinc-200">{column.name}</h3>
+          <h3 className={`font-semibold text-sm ${accent.header}`}>{column.name}</h3>
           <span
-            className={`px-2 py-0.5 rounded-full text-xs font-bold ${accent.bg}`}
+            className={`px-2 py-0.5 rounded-full text-xs font-bold border ${accent.badge}`}
           >
             {tasks.length}
           </span>
@@ -84,7 +97,7 @@ export const BoardColumn = ({
         {canEdit && (
           <button
             onClick={() => onAddTask(column.id)}
-            className="p-1.5 text-zinc-400 hover:text-white hover:bg-zinc-800 rounded-lg transition-colors"
+            className="p-1.5 text-slate-400 hover:text-pink-500 hover:bg-pink-50 rounded-lg transition-colors"
             title={`Add task to ${column.name}`}
           >
             <Plus className="w-4 h-4" />
@@ -106,12 +119,12 @@ export const BoardColumn = ({
         ))}
 
         {tasks.length === 0 && (
-          <div className="flex flex-col items-center justify-center h-48 border-2 border-dashed border-zinc-800/80 rounded-xl p-4 text-center">
-            <p className="text-xs text-zinc-500 font-medium">No tasks in {column.name}</p>
+          <div className="flex flex-col items-center justify-center h-48 border-2 border-dashed border-pink-100 rounded-xl p-4 text-center">
+            <p className="text-xs text-slate-400 font-medium">No tasks in {column.name}</p>
             {canEdit && (
               <button
                 onClick={() => onAddTask(column.id)}
-                className="mt-2 text-xs font-semibold text-indigo-400 hover:text-indigo-300"
+                className="mt-2 text-xs font-semibold text-pink-400 hover:text-pink-500"
               >
                 + Create one
               </button>

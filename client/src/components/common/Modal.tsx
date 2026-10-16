@@ -38,22 +38,22 @@ export const Modal = ({
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
       <div
-        className="fixed inset-0 bg-black/70 backdrop-blur-sm transition-opacity"
+        className="fixed inset-0 bg-pink-950/20 backdrop-blur-sm transition-opacity"
         onClick={onClose}
       />
       <div
-        className={`relative w-full ${maxWidth} bg-zinc-900 border border-zinc-800 rounded-2xl shadow-2xl overflow-hidden z-10 my-8`}
+        className={`relative w-full ${maxWidth} bg-white border border-pink-100 rounded-2xl shadow-2xl shadow-pink-200/40 overflow-hidden z-10 my-8`}
       >
-        <div className="flex items-center justify-between px-6 py-5 border-b border-zinc-800/80">
+        <div className="flex items-center justify-between px-6 py-5 border-b border-pink-100 bg-gradient-to-r from-pink-50 to-white">
           <div>
-            <h3 className="text-lg font-semibold text-zinc-100">{title}</h3>
+            <h3 className="text-lg font-semibold text-slate-800">{title}</h3>
             {description && (
-              <p className="text-xs text-zinc-400 mt-0.5">{description}</p>
+              <p className="text-xs text-pink-400 mt-0.5">{description}</p>
             )}
           </div>
           <button
             onClick={onClose}
-            className="p-1.5 text-zinc-400 hover:text-zinc-100 hover:bg-zinc-800 rounded-lg transition-colors"
+            className="p-1.5 text-slate-400 hover:text-rose-500 hover:bg-rose-50 rounded-lg transition-colors"
           >
             <X className="w-5 h-5" />
           </button>
